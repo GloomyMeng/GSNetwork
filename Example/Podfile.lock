@@ -1,0 +1,16 @@
+PODS:
+  - GSNetwork (0.1.0)
+
+DEPENDENCIES:
+  - GSNetwork (from `../`)
+
+EXTERNAL SOURCES:
+  GSNetwork:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  GSNetwork: 5bc42882f7ea1a8dcb74b30504c02315f7b2afb2
+
+PODFILE CHECKSUM: b06986c8baa85c093294e539885db87fb20044de
+
+COCOAPODS: 1.7.0.rc.1
