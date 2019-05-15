@@ -16,32 +16,34 @@ else
 	Module_Name="${Module_Name%.*}"
 	Old_Version="$(grep -r 's.version* ' ${Module_File} |awk -F = '{print $2}')"
 
-	# 1.更新 jazzy documents
+  #  1. Lint to Cocoapods
+  echo "\n Cocoapods lint..."
+  ($(cd ${Module_Path}; pod lib lint ${Module_File})) ||  { echo "\nFailure...."; exit 1; }
 
-	echo "Begin Generate jazzy Document....\n"
-	echo $(cd ${Module_Code_Path}; jazzy -m ${Module_Name} -x -workspace,${Module_Name}.xcworkspace,-scheme,${Module_Name} -c -a Gloomy.Meng -u https://gloomymeng.io/ -g https://github.com/GloomyMeng -o ${Module_Path}/docs --min-acl internal --exclude=/*/*Typealiases.swift)
+	#  2.更新 jazzy documents
+
+	echo "\nBegin Generate jazzy Document....\n"
+  ($(cd ${Module_Code_Path}; jazzy -m ${Module_Name} -x -workspace,${Module_Name}.xcworkspace,-scheme,${Module_Name} -c -a Gloomy.Meng -u https://gloomymeng.io/ -g https://github.com/GloomyMeng -o ${Module_Path}/docs --min-acl internal --exclude=/*/*Typealiases.swift)) ||  { echo "\nFailure...."; exit 1; }
 	echo "\nGit Commit For Document Updated "
-  echo $(cd ${Module_Path};git add .; git commit -m "Updated: code documents updated")
+  ($(cd ${Module_Path};git add .; git commit -m "Updated: code documents updated")) ||  { echo "\nFailure...."; exit 1; }
 
-  # 2.更新 .podspec 版本号
+  #  3.更新 .podspec 版本号
   echo "\nBegin Update Podspec Version...."
-  echo $(sed -i "" "s/${Old_Version}/ '${Tag_Version}'/g" ${Module_File})
+  ($(sed -i "" "s/${Old_Version}/ '${Tag_Version}'/g" ${Module_File})) ||  { echo "\nFailure...."; exit 1; }
   echo "\nGit Commit For Podspec Updated"
-  echo $(cd ${Module_Path};git add .; git commit -m "Updated: Podspec Version Updated")
+  ($(cd ${Module_Path};git add .; git commit -m "Updated: Podspec Version Updated")) ||  { echo "\nFailure...."; exit 1; }
 
-
-
-   # 3.GIT PUSH & GIT TAG PUSH
+   #  4.GIT PUSH & GIT TAG PUSH
   echo "\nGit Push...."
-  echo $(cd ${Module_Path}; git push)
+  ($(cd ${Module_Path}; git push)) ||  { echo "\nFailure...."; exit 1; }
   echo "\nAdd Tag...."
-  echo $(cd ${Module_Path};git tag -a ${Tag_Version} -m 'Release Version For Cocoapods')
+  ($(cd ${Module_Path};git tag -a ${Tag_Version} -m 'Release Version For Cocoapods')) || { echo "\nFailure...."; exit 1; }
   echo "\nGit Push Tag...."
-  echo $(cd ${Module_Path}; git push origin ${Tag_Version})
+  ($(cd ${Module_Path}; git push origin ${Tag_Version})) || { echo "\nFailure...."; exit 1; }
 
-  #  4. Thunk to Cocoapods
+  #  5. Thunk to Cocoapods
   echo "\n Cocoapods Push..."
-  echo $(cd ${Module_Path}; pod trunk push --verbose ${Module_File})
+  ($(cd ${Module_Path}; pod trunk push --verbose ${Module_File})) || { echo "\nFailure...."; exit 1; }
 
 	echo "\nSuccess...."
 fi
