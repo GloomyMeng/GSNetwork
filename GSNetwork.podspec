@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'GSNetwork'
-  s.version          = '0.1.0'
+  s.version          = '0.0.1'
   s.summary          = 'Network components of the GS series components'
 
 # This description is used to generate tags and improve search results.
