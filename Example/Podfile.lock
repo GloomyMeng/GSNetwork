@@ -1,15 +1,32 @@
 PODS:
-  - GSNetwork (0.1.0)
+  - Alamofire (5.0.0-beta.6)
+  - GSBasis (0.0.5):
+    - GSBasis/Common (= 0.0.5)
+  - GSBasis/Common (0.0.5):
+    - Then
+  - GSNetwork (0.1.0):
+    - Alamofire (~> 5.0.0-beta.5)
+    - GSBasis
+  - Then (2.4.0)
 
 DEPENDENCIES:
   - GSNetwork (from `../`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Alamofire
+    - GSBasis
+    - Then
 
 EXTERNAL SOURCES:
   GSNetwork:
     :path: "../"
 
 SPEC CHECKSUMS:
-  GSNetwork: 5bc42882f7ea1a8dcb74b30504c02315f7b2afb2
+  Alamofire: cd08a4402bd12cacd0c66f23fb12fec8d6b965e4
+  GSBasis: 999bf89544038d1656243fe5d2ef3ec263766384
+  GSNetwork: 99736170e422804a86871173cdf9b1601b0200e8
+  Then: 71866660c7af35a7343831f7668e7cd2b62ee0f2
 
 PODFILE CHECKSUM: b06986c8baa85c093294e539885db87fb20044de
 
