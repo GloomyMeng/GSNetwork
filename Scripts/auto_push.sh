@@ -3,7 +3,7 @@
 
 Tag_Version="$1"
 
-if [${Tag_Version} = ""]; then 
+if ${Tag_Version} == ""; then 
 	echo "You Need Input A Tag Version"
 	exit 1
 else
@@ -17,13 +17,13 @@ else
 	Old_Version="$(grep -r 's.version* ' ${Module_File} |awk -F = '{print $2}')"
 
   #  1. Lint to Cocoapods
-  echo "\n Cocoapods lint..."
-  ($(cd ${Module_Path}; pod lib lint ${Module_File})) ||  { echo "\nFailure...."; exit 1; }
+  # echo "\n Cocoapods lint..."
+  # ($(cd ${Module_Path}; pod lib lint ${Module_File})) || { echo "\nFailure...."; exit 1; }
 
 	#  2.更新 jazzy documents
 
 	echo "\nBegin Generate jazzy Document....\n"
-  ($(cd ${Module_Code_Path}; jazzy -m ${Module_Name} -x -workspace,${Module_Name}.xcworkspace,-scheme,${Module_Name} -c -a Gloomy.Meng -u https://gloomymeng.io/ -g https://github.com/GloomyMeng -o ${Module_Path}/docs --min-acl internal --exclude=/*/*Typealiases.swift)) ||  { echo "\nFailure...."; exit 1; }
+  !($(cd ${Module_Code_Path}; jazzy -m ${Module_Name} -x -workspace,${Module_Name}.xcworkspace,-scheme,${Module_Name} -c -a Gloomy.Meng -u https://gloomymeng.io/ -g https://github.com/GloomyMeng -o ${Module_Path}/docs --min-acl internal --exclude=/*/*Typealiases.swift)) ||  { echo "\nFailure...."; exit 1; }
 	echo "\nGit Commit For Document Updated "
   ($(cd ${Module_Path};git add .; git commit -m "Updated: code documents updated")) ||  { echo "\nFailure...."; exit 1; }
 
