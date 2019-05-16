@@ -118,10 +118,10 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>&lt;#Description#&gt;</p>
+                        <p>GSNetwork&rsquo;s notification names</p>
 
 <ul>
-<li>changed: &lt;#changed description#&gt;</li>
+<li>changed: network status changed. &lsquo;notification.object&rsquo; is a bool value. ture is have network(ethernetOrWiFi, wwan), false is not.</li>
 </ul>
 
                         <a href="Enums/NetworkNotifier.html" class="slightly-smaller">See more</a>
@@ -165,6 +165,7 @@
 their own associated reasons</p>
 
 <ul>
+<li>explicitlyCancelled: only when reset config, will stop all current request and throw error</li>
 <li>unknownErrorOccur: Alamofire occur errror, and can&rsquo;t get error detail</li>
 <li>afErrorOccur: Alamofire occur errror</li>
 <li>apiStatusError: API return date with error code, &lsquo;APIErrorRetable&rsquo; &lsquo;s &#39;isValidCode()&rsquo; used to distinguish between normal and error states</li>
@@ -184,6 +185,17 @@ their own associated reasons</p>
                     </section>
                   </div>
                 </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/HTTPMethod"></a>
+                <a name="//apple_ref/swift/Section/HTTPMethod" class="dashAnchor"></a>
+                <a href="#/HTTPMethod">
+                  <h3 class="section-name">HTTPMethod</h3>
+                </a>
+              </div>
+              <ul>
                 <li class="item">
                   <div>
                     <code>
@@ -197,17 +209,12 @@ their own associated reasons</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>&lt;#Description#&gt;</p>
+                        <p>&lsquo;HTTPMethod&rsquo;, use this to define http method.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    Because if use &lsquo;Alamofire.HTTPMethod&rsquo; directly, need add &lsquo;import Alamofire&rsquo; on the top
 
-<ul>
-<li>get: &lt;#get description#&gt;</li>
-<li>post: &lt;#post description#&gt;</li>
-<li>head: &lt;#head description#&gt;</li>
-<li>put: &lt;#put description#&gt;</li>
-<li>patch: &lt;#patch description#&gt;</li>
-<li>delete: &lt;#delete description#&gt;</li>
-<li>form: &lt;#form description#&gt;</li>
-</ul>
+</div>
 
                         <a href="Enums/HTTPMethod.html" class="slightly-smaller">See more</a>
                       </div>
@@ -222,6 +229,17 @@ their own associated reasons</p>
                     </section>
                   </div>
                 </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/HTTPEncodeType"></a>
+                <a name="//apple_ref/swift/Section/HTTPEncodeType" class="dashAnchor"></a>
+                <a href="#/HTTPEncodeType">
+                  <h3 class="section-name">HTTPEncodeType</h3>
+                </a>
+              </div>
+              <ul>
                 <li class="item">
                   <div>
                     <code>
@@ -235,12 +253,12 @@ their own associated reasons</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>&lt;#Description#&gt;</p>
+                        <p>A enum used to define how a set of parameters are applied to a URLRequest.</p>
 
 <ul>
-<li>url: &lt;#url description#&gt;</li>
-<li>json: &lt;#json description#&gt;</li>
-<li>custom: &lt;#custom description#&gt;</li>
+<li>url: Creates a url-encoded query string to be set as or appended to any existing URL query string or set as the HTTP body of the URL request. Whether the query string is set or appended to any existing URL query string or set as the HTTP body depends on the destination of the encoding.</li>
+<li>json: Uses JSONSerialization to create a JSON representation of the parameters object, which is set as the body of the request. The Content-Type HTTP header field of an encoded request is set to application/json.</li>
+<li>custom: Use custom parameter encoding instance which confirm protocol &lsquo;ParameterEncoding&rsquo;</li>
 </ul>
 
                         <a href="Enums/HTTPEncodeType.html" class="slightly-smaller">See more</a>
@@ -261,7 +279,7 @@ their own associated reasons</p>
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2019 <a class="link" href="https://gloomymeng.io/" target="_blank" rel="external">Gloomy.Meng</a>. All rights reserved. (Last updated: 2019-05-15)</p>
+          <p>&copy; 2019 <a class="link" href="https://gloomymeng.io/" target="_blank" rel="external">Gloomy.Meng</a>. All rights reserved. (Last updated: 2019-05-16)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.5</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

@@ -98,7 +98,42 @@
 
                 </div>
               </div>
-            <p>&lt;#Description#&gt;</p>
+            <p>&lsquo;APIRoute&rsquo; is a protocol for define API, with specific uri, api parameter, api http method, api encode type.
+Use enum to define API requests for different modules.</p>
+
+<p>For example:</p>
+<pre class="highlight swift"><code><span class="kd">enum</span> <span class="kt">UserRoute</span><span class="p">:</span> <span class="kt">APIRoute</span> <span class="p">{</span>
+
+    <span class="k">case</span> <span class="nf">userInfo</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span>
+    <span class="k">case</span> <span class="nf">upateInfo</span><span class="p">(</span><span class="nv">user</span><span class="p">:</span> <span class="kt">User</span><span class="p">)</span>
+    <span class="k">case</span> <span class="n">logout</span>
+    <span class="k">case</span> <span class="nf">login</span><span class="p">(</span><span class="nv">username</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">password</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span>
+
+    <span class="k">var</span> <span class="nv">uri</span><span class="p">:</span> <span class="kt">String</span> <span class="p">{</span>
+        <span class="k">switch</span> <span class="k">self</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="o">.</span><span class="nf">userInfo</span><span class="p">(</span><span class="k">let</span> <span class="nv">id</span><span class="p">):</span>                     <span class="k">return</span> <span class="s">""</span>
+        <span class="k">case</span> <span class="o">.</span><span class="nf">upateInfo</span><span class="p">(</span><span class="k">let</span> <span class="nv">user</span><span class="p">):</span>                  <span class="k">return</span> <span class="s">""</span>
+        <span class="k">case</span> <span class="o">.</span><span class="nv">logout</span><span class="p">:</span>                               <span class="k">return</span> <span class="s">""</span>
+        <span class="k">case</span> <span class="o">.</span><span class="nf">login</span><span class="p">(</span><span class="k">let</span> <span class="nv">username</span><span class="p">,</span> <span class="k">let</span> <span class="nv">password</span><span class="p">):</span>    <span class="k">return</span> <span class="s">""</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">var</span> <span class="nv">parameters</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt">Any</span><span class="p">]</span> <span class="p">{</span> <span class="k">return</span> <span class="p">[:]</span> <span class="p">}</span>
+
+    <span class="k">var</span> <span class="nv">method</span><span class="p">:</span> <span class="kt">HTTPMethod</span> <span class="p">{</span>
+        <span class="k">switch</span> <span class="k">self</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="o">.</span><span class="nf">userInfo</span><span class="p">(</span><span class="k">let</span> <span class="nv">id</span><span class="p">):</span>                     <span class="k">return</span> <span class="o">.</span><span class="k">get</span>
+        <span class="k">case</span> <span class="o">.</span><span class="nf">upateInfo</span><span class="p">(</span><span class="k">let</span> <span class="nv">user</span><span class="p">):</span>                  <span class="k">return</span> <span class="o">.</span><span class="n">post</span>
+        <span class="k">case</span> <span class="o">.</span><span class="nv">logout</span><span class="p">:</span>                               <span class="k">return</span> <span class="o">.</span><span class="k">get</span>
+        <span class="k">case</span> <span class="o">.</span><span class="nf">login</span><span class="p">(</span><span class="k">let</span> <span class="nv">username</span><span class="p">,</span> <span class="k">let</span> <span class="nv">password</span><span class="p">):</span>    <span class="k">return</span> <span class="o">.</span><span class="k">get</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">var</span> <span class="nv">encodeType</span><span class="p">:</span> <span class="kt">HTTPEncodeType</span> <span class="p">{</span> <span class="k">return</span> <span class="o">.</span><span class="n">json</span> <span class="p">}</span>
+
+    <span class="kd">func</span> <span class="nf">customHost</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">String</span><span class="p">?</span> <span class="p">{</span> <span class="k">return</span> <span class="kc">nil</span> <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
 
           </section>
           <section class="section task-group-section">
@@ -117,7 +152,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>&lt;#Description#&gt;</p>
+                        <p>API request url, like <q>/</q></p>
 
                       </div>
                       <div class="declaration">
@@ -144,7 +179,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>&lt;#Description#&gt;</p>
+                        <p>API request parameters</p>
 
                       </div>
                       <div class="declaration">
@@ -171,7 +206,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>&lt;#Description#&gt;</p>
+                        <p>API request method</p>
 
                       </div>
                       <div class="declaration">
@@ -198,7 +233,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>&lt;#Description#&gt;</p>
+                        <p>API parameter encode type</p>
 
                       </div>
                       <div class="declaration">
@@ -219,14 +254,26 @@
                     <a name="//apple_ref/swift/Method/customHost()" class="dashAnchor"></a>
                     <a class="token" href="#/s:9GSNetwork8APIRouteP10customHostSSSgyF">customHost()</a>
                     </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
                   </div>
                   <div class="height-container">
                     <div class="pointer-container"></div>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>&lt;#Description#&gt;</p>
+                        <p>API request custom host</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    default is GSNetwork config&rsquo;s default host
 
+</div>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
@@ -235,10 +282,6 @@
                           <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">customHost</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">String</span><span class="p">?</span></code></pre>
 
                         </div>
-                      </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p>&lt;#return value description#&gt;</p>
                       </div>
                     </section>
                   </div>
@@ -270,7 +313,27 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>&lt;#Description#&gt;</p>
+                        <p>Start Request with APIRoute&rsquo;s instance.</p>
+
+<p>If need handler error for finish other, like update UI, reset property:</p>
+<pre class="highlight swift"><code><span class="kt">UserRoute</span><span class="o">.</span><span class="nf">login</span><span class="p">(</span><span class="nv">username</span><span class="p">:</span> <span class="s">"xxxxx"</span><span class="p">,</span> <span class="nv">password</span><span class="p">:</span> <span class="s">"xxxx"</span><span class="p">)</span><span class="o">.</span><span class="nf">start</span><span class="p">(</span><span class="nv">success</span><span class="p">:</span> <span class="p">{</span> <span class="p">(</span><span class="nv">rs</span><span class="p">:</span> <span class="kt">APIReturn</span><span class="o">&lt;</span><span class="kt">Model</span><span class="o">&gt;</span><span class="p">)</span> <span class="k">in</span>
+    <span class="c1">// do something...</span>
+<span class="p">})</span> <span class="p">{</span> <span class="p">(</span><span class="n">error</span><span class="p">)</span> <span class="k">in</span>
+    <span class="c1">// do something...</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>Or without failure handler</p>
+<pre class="highlight swift"><code><span class="kt">UserRoute</span><span class="o">.</span><span class="n">logout</span><span class="o">.</span><span class="nf">start</span><span class="p">(</span><span class="nv">success</span><span class="p">:</span> <span class="p">{</span> <span class="p">(</span><span class="nv">rs</span><span class="p">:</span> <span class="kt">APIReturn</span><span class="o">&lt;</span><span class="kt">Bool</span><span class="o">&gt;</span><span class="p">)</span> <span class="k">in</span>
+    <span class="c1">// do something...</span>
+<span class="p">})</span>
+</code></pre>
+<div class="aside aside-warning">
+    <p class="aside-title">Warning</p>
+    <p>Suggest handler error by GSNetworkConfig&rsquo;s failureClosure. this handler just used when you need to update local code logic.
+       like reset properties, refresh UI or others </p>
+
+</div>
 
                       </div>
                       <div class="declaration">
@@ -293,7 +356,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>&lt;#success description#&gt;</p>
+                                  <p>Success handler with generic data structure</p>
                                 </div>
                               </td>
                             </tr>
@@ -305,7 +368,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>&lt;#failure description#&gt;</p>
+                                  <p>Failure handler with error</p>
                                 </div>
                               </td>
                             </tr>
@@ -320,7 +383,7 @@
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2019 <a class="link" href="https://gloomymeng.io/" target="_blank" rel="external">Gloomy.Meng</a>. All rights reserved. (Last updated: 2019-05-15)</p>
+          <p>&copy; 2019 <a class="link" href="https://gloomymeng.io/" target="_blank" rel="external">Gloomy.Meng</a>. All rights reserved. (Last updated: 2019-05-16)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.5</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

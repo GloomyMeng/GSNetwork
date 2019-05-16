@@ -94,11 +94,19 @@
             <h1>GSNetworkConfig</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">GSNetworkConfig</span> <span class="p">:</span> <span class="kt">Then</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">GSNetworkConfig</span> <span class="p">:</span> <span class="kt">Then</span></code></pre>
 
                 </div>
               </div>
-            <p>&lt;#Description#&gt;</p>
+            <p>A struct use to config &lsquo;GSNetwork&rsquo;, to define property GSNetwork needed</p>
+
+<p>For example:</p>
+<pre class="highlight swift"><code><span class="kt">Network</span><span class="o">.</span><span class="nf">config</span><span class="p">(</span><span class="nv">config</span><span class="p">:</span> <span class="kt">GSNetworkConfig</span><span class="o">.</span><span class="nf">init</span><span class="p">()</span><span class="o">.</span><span class="n">then</span> <span class="p">{</span>
+    <span class="nv">$0</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="s">""</span>
+    <span class="nv">$0</span><span class="o">.</span><span class="n">customHeader</span> <span class="o">=</span> <span class="p">[:]</span>
+    <span class="c1">//..//</span>
+<span class="p">})</span>
+</code></pre>
 
           </section>
           <section class="section task-group-section">
@@ -117,7 +125,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>&lt;#Description#&gt;</p>
+                        <p>API request default host</p>
 
                       </div>
                       <div class="declaration">
@@ -144,7 +152,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>&lt;#Description#&gt;</p>
+                        <p>API request default general parameters</p>
 
                       </div>
                       <div class="declaration">
@@ -171,7 +179,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>&lt;#Description#&gt;</p>
+                        <p>API request default general HTTPHeaders</p>
 
                       </div>
                       <div class="declaration">
@@ -198,7 +206,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>&lt;#Description#&gt;</p>
+                        <p>API request failure closure, use to handle error that occur</p>
 
                       </div>
                       <div class="declaration">
@@ -225,7 +233,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>&lt;#Description#&gt;</p>
+                        <p>Request interceptor, use to something what wanted, like oauth1.0 or others</p>
 
                       </div>
                       <div class="declaration">
@@ -233,6 +241,32 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">interceptor</span><span class="p">:</span> <span class="kt">RequestInterceptor</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:9GSNetwork0A6ConfigCACycfc"></a>
+                    <a name="//apple_ref/swift/Method/init()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:9GSNetwork0A6ConfigCACycfc">init()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">()</span></code></pre>
 
                         </div>
                       </div>
@@ -281,7 +315,7 @@
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2019 <a class="link" href="https://gloomymeng.io/" target="_blank" rel="external">Gloomy.Meng</a>. All rights reserved. (Last updated: 2019-05-15)</p>
+          <p>&copy; 2019 <a class="link" href="https://gloomymeng.io/" target="_blank" rel="external">Gloomy.Meng</a>. All rights reserved. (Last updated: 2019-05-16)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.5</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
