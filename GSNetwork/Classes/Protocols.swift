@@ -13,55 +13,96 @@ import Alamofire
 /// 'GSNetworkError' is a error type returned by GSNetwork. It encompasses a few different types of errors, each with
 /// their own associated reasons
 ///
+/// - explicitlyCancelled: only when reset config, will stop all current request and throw error
 /// - unknownErrorOccur: Alamofire occur errror, and can't get error detail
 /// - afErrorOccur: Alamofire occur errror
 /// - apiStatusError: API return date with error code, 'APIErrorRetable' 's 'isValidCode()' used to distinguish between normal and error states
 /// - noNetworkError: Start request with no network connect now
 public enum GSNetworkError: GSError {
     
+    case explicitlyCancelled
     case unknownErrorOccur(error: Error?)
     case afErrorOccur(error: AFError)
     case apiStatusError(reason: APIErrorRetable)
     case noNetworkError
 }
 
-/// <#Description#>
+/// 'APIErrorRetable' is a protocol to describe the business API return data status.
+/// API return always contain 'code' and 'message', can use code to resolve whether the data is use for show or show error content
+///
+/// For example:
+///
+///     struct APIErrorCode: APIErrorRetable {
+///         var code: Int
+///         var message: String
+///         var localizedDescription: String { return "Code: \(code), Message: \(message)" }
+///
+///         func isValidCode() -> Bool { return code == 0 }
+///     }
+///
 public protocol APIErrorRetable: Decodable, ErrorReason {
     
-    /// <#Description#>
+    /// API return status code
     var code: Int { get set }
     
-    /// <#Description#>
+    /// API return status message
     var message: String { get set }
     
-    /// <#Description#>
+    /// Resolve whether the returned data is the correct return data.
     ///
-    /// - Returns: <#return value description#>
+    /// - Returns: true means 'code' is right, false means is wrong
     func isValidCode() -> Bool
 }
 
-/// <#Description#>
+/// 'APIRetable' is a protocol to describe the bussiness API return data.
+///
+/// API return data structure include mode list, can like this:
+///
+///     struct APIReturn<S: Decodable>: APIRetable {
+///         typealias T = S
+///
+///         var error: APIErrorCode?
+///         var data: [S]?
+///     }
+///
+/// And if is onle a model, can like this:
+///
+///     struct APIReturn<S: Decodable>: APIRetable {
+///         typealias T = S
+///
+///         var error: APIErrorCode?
+///         var data: S?
+///     }
+///
+/// Or:
+///
+///     struct APIReturn<S: Decodable>: APIRetable {
+///         typealias T = S
+///
+///         var error: APIErrorCode?
+///         var data: [String: S]?
+///     }
+///
+/// The difference is that the former needs a new data model, the latter does not need
+///
 public protocol APIRetable: Decodable {
     
-    /// <#Description#>
+    /// API return data
     associatedtype T: Decodable
     
-    /// <#Description#>
+    /// API return data status
     associatedtype U: APIErrorRetable
     
-    /// <#Description#>
+    /// API return data status
     var error: U? { get set }
 }
 
-/// <#Description#>
+// MARK: - HTTPMethod
+
+/// 'HTTPMethod', use this to define http method.
 ///
-/// - get: <#get description#>
-/// - post: <#post description#>
-/// - head: <#head description#>
-/// - put: <#put description#>
-/// - patch: <#patch description#>
-/// - delete: <#delete description#>
-/// - form: <#form description#>
+/// - Note: Because if use 'Alamofire.HTTPMethod' directly, need add 'import Alamofire' on the top
+///
 public enum HTTPMethod {
     case get, post, head, put, patch, delete, form
     
@@ -85,11 +126,13 @@ public enum HTTPMethod {
     }
 }
 
-/// <#Description#>
+// MARK: - HTTPEncodeType
+
+/// A enum used to define how a set of parameters are applied to a URLRequest.
 ///
-/// - url: <#url description#>
-/// - json: <#json description#>
-/// - custom: <#custom description#>
+/// - url: Creates a url-encoded query string to be set as or appended to any existing URL query string or set as the HTTP body of the URL request. Whether the query string is set or appended to any existing URL query string or set as the HTTP body depends on the destination of the encoding.
+/// - json: Uses JSONSerialization to create a JSON representation of the parameters object, which is set as the body of the request. The Content-Type HTTP header field of an encoded request is set to application/json.
+/// - custom: Use custom parameter encoding instance which confirm protocol 'ParameterEncoding'
 public enum HTTPEncodeType {
     
     case url
@@ -105,27 +148,72 @@ public enum HTTPEncodeType {
     }
 }
 
-/// <#Description#>
+// MARK: - APIRoute
+
+/// A closure with 'GSNetworkError'.
 public typealias APIFailureClosure = (GSNetworkError) -> Void
 
-/// <#Description#>
+/// 'APIRoute' is a protocol for define API, with specific uri, api parameter, api http method, api encode type.
+/// Use enum to define API requests for different modules.
+///
+/// For example:
+///
+///     enum UserRoute: APIRoute {
+///
+///         case userInfo(id: String)
+///         case upateInfo(user: User)
+///         case logout
+///         case login(username: String, password: String)
+///
+///         var uri: String {
+///             switch self {
+///             case .userInfo(let id):                     return ""
+///             case .upateInfo(let user):                  return ""
+///             case .logout:                               return ""
+///             case .login(let username, let password):    return ""
+///             }
+///         }
+///
+///         var parameters: [String : Any] { return [:] }
+///
+///         var method: HTTPMethod {
+///             switch self {
+///             case .userInfo(let id):                     return .get
+///             case .upateInfo(let user):                  return .post
+///             case .logout:                               return .get
+///             case .login(let username, let password):    return .get
+///             }
+///         }
+///
+///         var encodeType: HTTPEncodeType { return .json }
+///
+///         func customHost() -> String? { return nil }
+///     }
+///
 public protocol APIRoute {
     
-    /// <#Description#>
+    /// API request url, like "/"
     var uri: String { get }
     
-    /// <#Description#>
+    /// API request parameters
     var parameters: [String : Any] { get }
     
-    /// <#Description#>
+    /// API request method
     var method: HTTPMethod { get }
     
-    /// <#Description#>
+    /// API parameter encode type
     var encodeType: HTTPEncodeType { get }
     
-    /// <#Description#>
+    /// API request custom host
     ///
-    /// - Returns: <#return value description#>
+    /// - Note: default is GSNetwork config's default host
     func customHost() -> String?
-    
 }
+
+extension APIRoute {
+    
+    func customHost() -> String? { return Network.config.host }
+}
+
+
+

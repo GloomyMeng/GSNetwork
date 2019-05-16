@@ -12,9 +12,9 @@ import Then
 
 // MARK: - NetworkNotifier
 
-/// <#Description#>
+/// GSNetwork's notification names
 ///
-/// - changed: <#changed description#>
+/// - changed: network status changed. 'notification.object' is a bool value. ture is have network(ethernetOrWiFi, wwan), false is not.
 public enum NetworkNotifier: String, NotifierType {
     
     case stateChanged
@@ -22,23 +22,33 @@ public enum NetworkNotifier: String, NotifierType {
 
 // MARK: - GSNetworkConfig
 
-/// <#Description#>
-public class GSNetworkConfig: Then {
+/// A struct use to config 'GSNetwork', to define property GSNetwork needed
+///
+/// For example:
+///
+///     Network.config(config: GSNetworkConfig.init().then {
+///         $0.host = ""
+///         $0.customHeader = [:]
+///         //..//
+///     })
+public final class GSNetworkConfig: Then {
     
-    /// <#Description#>
+    ///  API request default host
     public var host = ""
     
-    /// <#Description#>
+    /// API request default general parameters
     public var extendParameter: ((Parameters?) -> Parameters?) = { return $0 }
     
-    /// <#Description#>
+    /// API request default general HTTPHeaders
     public var customHeader: () -> [String: String] = { [:] }
     
-    /// <#Description#>
+    /// API request failure closure, use to handle error that occur
     public var failureClosure: APIFailureClosure = { _ in }
     
-    /// <#Description#>
+    /// Request interceptor, use to something what wanted, like oauth1.0 or others
     public var interceptor: RequestInterceptor? = nil
+    
+    public init() {} 
 }
 
 extension GSNetworkConfig {
@@ -51,20 +61,22 @@ extension GSNetworkConfig {
 
 // MARK: - GSNetwork
 
-/// <#Description#>
-public let Network = GSNetwork.default
+/// Aliases for 'GSNetwork.shared'
+public let Network = GSNetwork.shared
 
-/// <#Description#>
 public final class GSNetwork {
     
     
-    /// <#Description#>
-    public static var timeout = 10.0
+    /// HTTP request's timeout interval to use when waiting for additional data.
+    public static var timeout: TimeInterval {
+        set { shared.session.sessionConfiguration.timeoutIntervalForRequest = newValue }
+        get { return shared.session.sessionConfiguration.timeoutIntervalForRequest }
+    }
     
-    /// <#Description#>
-    public static let `default`: GSNetwork = { return GSNetwork() }()
+    /// Shared instance for 'GSNetwork'
+    public static let shared: GSNetwork = { return GSNetwork() }()
     
-    /// <#Description#>
+    /// The current states of network reachability.
     public var isReachable: Bool {
         return networkState != .notReachable && networkState != .unknown
     }
@@ -86,10 +98,20 @@ public final class GSNetwork {
     
     private init() {}
     
-    /// <#Description#>
+    /// Use this method to set config for Network request used.
     ///
-    /// - Parameter config: <#config description#>
+    /// - Note: reset config will stop current requests and throw 'GSNetworkError.explicitlyCancelled'
+    ///
+    /// For example:
+    ///
+    ///     Network.config(config: GSNetworkConfig.init().then {
+    ///         $0.host = ""
+    ///         $0.customHeader = [:]
+    ///         //..//
+    ///     })
     public func config(config: GSNetworkConfig) {
+        
+        session.cancelRequestsForSessionInvalidation(with: GSNetworkError.explicitlyCancelled)
         self.config = config
         if let host = self.config.validHost {
             self.reachabilityManager = NetworkReachabilityManager(host: host)
@@ -100,25 +122,40 @@ public final class GSNetwork {
         }
     }
     
-    deinit {
-        self.reachabilityManager?.stopListening()
-    }
+    deinit { self.reachabilityManager?.stopListening() }
 }
 
 // MARK: - APIRoute extensions
 
 extension APIRoute {
     
-    /// <#Description#>
+    /// Start Request with APIRoute's instance.
+    ///
+    /// If need handler error for finish other, like update UI, reset property:
+    ///
+    ///     UserRoute.login(username: "xxxxx", password: "xxxx").start(success: { (rs: APIReturn<Model>) in
+    ///         // do something...
+    ///     }) { (error) in
+    ///         // do something...
+    ///     }
+    ///
+    /// Or without failure handler
+    ///
+    ///     UserRoute.logout.start(success: { (rs: APIReturn<Bool>) in
+    ///         // do something...
+    ///     })
+    ///
+    /// - Warning: Suggest handler error by GSNetworkConfig's failureClosure. this handler just used when you need to update local code logic.
+    ///            like reset properties, refresh UI or others 
     ///
     /// - Parameters:
-    ///   - success: <#success description#>
-    ///   - failure: <#failure description#>
+    ///   - success: Success handler with generic data structure
+    ///   - failure: Failure handler with error
     public func start<T: APIRetable>(success: @escaping ((T) -> Void), _ failure: APIFailureClosure? = nil) {
         let failureClosure: (GSNetworkError, DataResponse<T>?) -> Void = { error, resp in
             Async.main {
                 failure?(error)
-                GSNetwork.default.config.failureClosure(error)
+                Network.config.failureClosure(error)
             }
         }
         

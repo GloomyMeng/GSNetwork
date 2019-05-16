@@ -1,10 +1,10 @@
 PODS:
   - Alamofire (5.0.0-beta.6)
-  - GSBasis (0.0.5):
-    - GSBasis/Common (= 0.0.5)
-  - GSBasis/Common (0.0.5):
+  - GSBasis (0.0.6):
+    - GSBasis/Common (= 0.0.6)
+  - GSBasis/Common (0.0.6):
     - Then
-  - GSNetwork (0.1.0):
+  - GSNetwork (0.0.2):
     - Alamofire (~> 5.0.0-beta.5)
     - GSBasis
   - Then (2.4.0)
@@ -24,8 +24,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Alamofire: cd08a4402bd12cacd0c66f23fb12fec8d6b965e4
-  GSBasis: 999bf89544038d1656243fe5d2ef3ec263766384
-  GSNetwork: 99736170e422804a86871173cdf9b1601b0200e8
+  GSBasis: e8a3bf3a61751eec8092ff53f6cee32c743f7288
+  GSNetwork: f3efb364bec956e89d7b588768dc6c71888fd292
   Then: 71866660c7af35a7343831f7668e7cd2b62ee0f2
 
 PODFILE CHECKSUM: b06986c8baa85c093294e539885db87fb20044de
